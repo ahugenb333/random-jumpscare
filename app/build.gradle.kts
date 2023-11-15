@@ -60,6 +60,9 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
 
+    //draw over other apps with Compose
+    implementation("io.github.torrydo:floating-bubble-view:0.6.3")
+
     //coil for image loading
     implementation("io.coil-kt:coil-compose:2.4.0")
     implementation("io.coil-kt:coil-gif:2.4.0")

@@ -1,19 +1,26 @@
 package com.ahugenb.rjs
 
+import android.content.Intent
 import android.os.Build.VERSION.SDK_INT
 import android.os.Bundle
+import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.content.ContextCompat
 import coil.ImageLoader
 import coil.compose.rememberAsyncImagePainter
 import coil.decode.GifDecoder
@@ -32,34 +39,18 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    GifImage()
+                    Button(onClick = {
+                        startService()
+                    }) {
+                        Text(text = "Start Service")
+                    }
                 }
             }
         }
     }
-}
 
-@Composable
-fun GifImage(
-    modifier: Modifier = Modifier,
-) {
-    val context = LocalContext.current
-    val imageLoader = ImageLoader.Builder(context)
-        .components {
-            if (SDK_INT >= 28) {
-                add(ImageDecoderDecoder.Factory())
-            } else {
-                add(GifDecoder.Factory())
-            }
-        }
-        .build()
-    Image(
-        painter = rememberAsyncImagePainter(
-            ImageRequest.Builder(context).data(data = R.drawable.creepy).apply(block = {
-                size(Size.ORIGINAL)
-            }).build(), imageLoader = imageLoader
-        ),
-        contentDescription = null,
-        modifier = modifier.fillMaxWidth(),
-    )
+    private fun startService() {
+        val intent = Intent(this, ImageBubbleService::class.java)
+        ContextCompat.startForegroundService(this, intent)
+    }
 }
